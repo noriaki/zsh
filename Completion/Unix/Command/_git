@@ -1166,7 +1166,8 @@ _git-log () {
 _git-merge () {
   local -a merge_options
   __git_setup_merge_options
-  local -a git_commit_opts=(--all --not HEAD --not)
+  local -a git_commit_opts
+  git_commit_opts=(--all --not HEAD --not)
 
   _arguments -S -s \
     $merge_options \
@@ -2100,16 +2101,20 @@ _git-config () {
 
 (( $+functions[__git_config_option] )) ||
 __git_config_option () {
-  local -A opt_args=()
-  local -a line=( ${words[CURRENT]%%=*} )
+  local -A opt_args
+  opt_args=()
+  local -a line
+  line=( ${words[CURRENT]%%=*} )
   local state=option
   __git_config_option-or-value "$@"
 }
 
 (( $+functions[__git_config_value] )) ||
 __git_config_value () {
-  local -A opt_args=()
-  local -a line=( ${words[CURRENT]%%=*} ${words[CURRENT]#*=} )
+  local -A opt_args
+  opt_args=()
+  local -a line
+  line=( ${words[CURRENT]%%=*} ${words[CURRENT]#*=} )
   local state=value
   __git_config_option-or-value "$@"
 }
@@ -2632,7 +2637,8 @@ __git_config_option-or-value () {
 
   # Add to $git_options options from the config file that aren't already in $git_options.
   () {
-    local -a -U sections_that_permit_arbitrary_subsection_names=(
+    local -a -U sections_that_permit_arbitrary_subsection_names
+    sections_that_permit_arbitrary_subsection_names=(
       alias
       pager
       pretty
@@ -2803,7 +2809,8 @@ __git_config_option-or-value () {
             __git_svn-remotes -S . && ret=0
             ;;
           (*.)
-            local -a existing_subsections=( ${${${(M)git_present_options:#${IPREFIX}*.*}#${IPREFIX}}%.*} )
+            local -a existing_subsections
+            existing_subsections=( ${${${(M)git_present_options:#${IPREFIX}*.*}#${IPREFIX}}%.*} )
             _describe -t existing-subsections "existing subsections" existing_subsections -S . && ret=0
             ;;
         esac
